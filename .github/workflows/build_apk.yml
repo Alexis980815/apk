@@ -1,1 +1,44 @@
+# Archivo: .github/workflows/build_apk.yml
 
+name: Build Kivy Android App
+
+on:
+  push:
+    branches:
+      - main # Este flujo de trabajo se ejecuta cada vez que subes código a la rama 'main'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # Usamos un servidor virtual con Ubuntu (Linux)
+
+    steps:
+      - name: Descargar el código del repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11' # Asegúrate de que la versión de Python coincida con la de tu proyecto
+
+      - name: Instalar Buildozer y dependencias
+        run: |
+          pip install buildozer
+          sudo apt-get update
+          sudo apt-get install -y build-essential git python3-pip openjdk-17-jdk libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libgles2-mesa-dev libgstreamer1.0-dev
+
+      - name: Configurar Buildozer
+        # Si tienes un archivo buildozer.spec, no necesitas esta parte,
+        # pero es útil para definir las dependencias si no lo tienes
+        run: |
+          buildozer init
+
+      - name: Compilar el APK para Android
+        # Este es el comando clave que ejecuta la compilación
+        run: |
+          buildozer android debug
+      
+      - name: Subir el APK como un artefacto
+        uses: actions/upload-artifact@v3
+        with:
+          name: MiApp-APK
+          path: bin/*.apk
