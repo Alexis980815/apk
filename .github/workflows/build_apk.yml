@@ -1,44 +1,33 @@
-# Archivo: .github/workflows/build_apk.yml
+# Archivo: .github/workflows/build_android.yml
 
-name: Build Kivy Android App
+name: Build for Android
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
+    name: Build for Android
     runs-on: ubuntu-latest
 
     steps:
-      - name: Descargar el código del repositorio
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Configurar Python
-        uses: actions/setup-python@v4
+      - name: Build with Buildozer
+        uses: ArtemSBulgakov/buildozer-action@v1
+        id: buildozer
         with:
-          python-version: '3.10'
-
-      - name: Instalar Buildozer y dependencias
-        run: |
-          pip install buildozer
-          pip install cython
-          sudo apt-get update
-          sudo apt-get install -y build-essential git python3-pip openjdk-17-jdk libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libgles2-mesa-dev libgstreamer1.0-dev automake libtool m4 libffi-dev # <-- Linea corregida con las nuevas dependencias
+          workdir: .
+          buildozer_version: stable
           
-
-      - name: Aceptar las licencias del SDK de Android
-        run: |
-          yes | buildozer android update
-          buildozer android clean
-
-      - name: Compilar el APK para Android
-        run: |
-          buildozer android debug
-      
-      - name: Subir el APK como un artefacto
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: MiApp-APK
-          path: bin/*.apk
+          name: package
+          path: ${{ steps.buildozer.outputs.filename }}
