@@ -25,7 +25,8 @@ jobs:
           pip install buildozer
           pip install cython
           sudo apt-get update
-          sudo apt-get install -y build-essential git python3-pip openjdk-17-jdk libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libgles2-mesa-dev libgstreamer1.0-dev automake libtool m4 # <-- Linea corregida con las nuevas dependencias
+          sudo apt-get install -y build-essential git python3-pip openjdk-17-jdk libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libgles2-mesa-dev libgstreamer1.0-dev automake libtool m4 libffi-dev # <-- Linea corregida con las nuevas dependencias
+          
 
       - name: Aceptar las licencias del SDK de Android
         run: |
