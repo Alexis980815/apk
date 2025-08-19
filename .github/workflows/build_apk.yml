@@ -23,6 +23,7 @@ jobs:
       - name: Instalar Buildozer y dependencias
         run: |
           pip install buildozer
+          pip install cython
           sudo apt-get update
           sudo apt-get install -y build-essential git python3-pip openjdk-17-jdk libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libgles2-mesa-dev libgstreamer1.0-dev
 
