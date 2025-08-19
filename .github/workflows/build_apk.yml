@@ -26,9 +26,17 @@ jobs:
           pip install cython
           sudo apt-get update
           sudo apt-get install -y build-essential git python3-pip openjdk-17-jdk libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libgles2-mesa-dev libgstreamer1.0-dev
+      
+      - name: Configurar Buildozer
+        run: |
+          buildozer init
+
+      - name: Aceptar las licencias del SDK de Android
+        run: |
+          yes | buildozer android update
+          buildozer android clean
 
       - name: Compilar el APK para Android
-        # Este es el comando clave que ejecuta la compilación
         run: |
           buildozer android debug
       
