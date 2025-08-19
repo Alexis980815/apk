@@ -1,0 +1,24 @@
+#:kivy 2.3.0
+<Label>:
+    color: 0, 0, 0, 1
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<TextInput>:
+    background_color: 1, 1, 1, 1
+    foreground_color: 0, 0, 0, 1
+    padding: 10
+    multiline: False
+    size_hint_y: None
+    height: 40
+
+<Button>:
+    background_color: 0.2, 0.6, 0.8, 1
+    color: 1, 1, 1, 1
+    size_hint_y: None
+    height: 40
+    font_size: 16
