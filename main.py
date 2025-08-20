@@ -13,7 +13,7 @@ from collections import defaultdict
 
 
 # Cargar el archivo .kv
-Builder.load_file('interfaz.kv')
+Builder.load_file('bolita.kv')
 
 class MainWidget(BoxLayout):
     def __init__(self, **kwargs):
