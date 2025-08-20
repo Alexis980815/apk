@@ -3,7 +3,6 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
-from kivy.lang import Builder
 from kivy.utils import get_color_from_hex
 from kivy.core.window import Window
 from kivy.clock import Clock
@@ -11,9 +10,6 @@ from kivy.uix.popup import Popup
 from kivy.uix.scrollview import ScrollView
 from collections import defaultdict
 
-
-# Cargar el archivo .kv
-Builder.load_file('bolita.kv')
 
 class MainWidget(BoxLayout):
     def __init__(self, **kwargs):
@@ -26,7 +22,7 @@ class MainWidget(BoxLayout):
         self.ids.fijos_num.bind(text=self.check_fijos_input)
         self.ids.parles_num.bind(text=self.check_parles_input)
         self.ids.centenas_num.bind(text=self.check_centenas_input)
-    
+
     def show_totals(self):
         combined_data = defaultdict(float)
 
@@ -43,7 +39,7 @@ class MainWidget(BoxLayout):
         for num in self.parles_data:
             importe = self.parles_data[num]
             parles_totals[importe].append(num)
-        
+
         popup = TotalTablePopup(combined_data=combined_data, parles_data=parles_totals)
         popup.open()
 
@@ -54,8 +50,8 @@ class MainWidget(BoxLayout):
     def check_parles_input(self, instance, value):
         lines = value.splitlines()
         if lines and len(lines[-1]) == 2:
-            # Programar la adición de una nueva línea para el siguiente ciclo del reloj
-            Clock.schedule_once(lambda dt: self.add_new_line_to_parles(instance), 0.1)
+            if not value.endswith('\n'):
+            	Clock.schedule_once(lambda dt: self.add_new_line_to_parles(instance), 0.1)
 
     def add_new_line_to_parles(self, instance):
         instance.text += '\n'
@@ -78,7 +74,7 @@ class MainWidget(BoxLayout):
             self.ids.fijos_amount.text = ''
         except ValueError:
             pass
-    
+
     def add_parles(self):
         num = self.ids.parles_num.text
         amount = self.ids.parles_amount.text
@@ -104,7 +100,7 @@ class MainWidget(BoxLayout):
             self.ids.centenas_amount.text = ''
         except ValueError:
             pass
-    
+
     def clean_dates(self):
         self.total_limpio = 0.0
         self.fijos_data = {}
@@ -118,7 +114,7 @@ class MainWidget(BoxLayout):
         fijos_text = [f"{num}: ${amount:.2f}" for num, amount in self.fijos_data.items()]
         parles_text = [f"{num}: ${amount:.2f}" for num, amount in self.parles_data.items()]
         centenas_text = [f"{num}: ${amount:.2f}" for num, amount in self.centenas_data.items()]
-        
+
         # 2. Unir las listas de strings para actualizar las etiquetas
         self.ids.fijos_list.text = '\n'.join(fijos_text)
         self.ids.parles_list.text = '\n'.join(parles_text)
@@ -132,7 +128,7 @@ class TotalTablePopup(Popup):
         self.auto_dismiss = True
 
         main_layout = BoxLayout(orientation='vertical')
-        
+
         scroll_view = ScrollView(do_scroll_x=False, do_scroll_y=True)
         table_layout = GridLayout(cols=2, spacing=5, size_hint_y=None)
         table_layout.bind(minimum_height=table_layout.setter('height'))
@@ -160,13 +156,13 @@ class TotalTablePopup(Popup):
         if parles_data:
             table_layout.add_widget(Label(text='Parles', bold=True, size_hint_y=None, height=30))
             table_layout.add_widget(Label(text='Importe', bold=True, size_hint_y=None, height=30))
-        
+
         sorted_parles_amounts = sorted(parles_data.keys())
         for amount in sorted_parles_amounts:
             numbers = parles_data[amount]
             # Formato de guiones
             numbers_text = '-'.join(numbers)
-            
+
             # Label que se ajusta a la altura del texto
             numbers_label = Label(text=numbers_text, halign='left', valign='middle', text_size=(table_layout.width / 2 - 10, None), size_hint_y=None)
             numbers_label.bind(texture_size=lambda instance, value: setattr(instance, 'height', value[1]))
@@ -186,7 +182,7 @@ class TotalTablePopup(Popup):
         main_layout.add_widget(close_button)
 
         self.content = main_layout
-        
+
 class BolitaApp(App):
     def build(self):
         Window.clearcolor = get_color_from_hex('#f0f0f0')
