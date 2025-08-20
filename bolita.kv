@@ -32,7 +32,7 @@
     orientation: 'vertical'
     spacing: 10
     padding: 10
-    
+
     # Encabezado
     BoxLayout:
         orientation: 'horizontal'
@@ -48,13 +48,13 @@
             font_size: 20
             halign: 'right'
             size_hint_x: 0.3
-            
+
     # Tabla
     GridLayout:
         cols: 3
         spacing: 5
         size_hint_y: 0.9
-        
+
         # === Columna Fijos ===
         BoxLayout:
             orientation: 'vertical'
@@ -86,7 +86,7 @@
                 text: 'Agregar'
                 size_hint_y: 0.1
                 on_press: root.add_fijos()
-        
+
         # === Columna Parles ===
         BoxLayout:
             orientation: 'vertical'
@@ -119,7 +119,7 @@
                 text: 'Agregar'
                 size_hint_y: 0.1
                 on_press: root.add_parles()
-                
+
         # === Columna Corridos ===
         BoxLayout:
             orientation: 'vertical'
@@ -151,7 +151,7 @@
                 text: 'Agregar'
                 size_hint_y: 0.1
                 on_press: root.add_centenas()
-    
+
     BoxLayout:
         orientation: 'horizontal'
         size_hint_y: 0.1
